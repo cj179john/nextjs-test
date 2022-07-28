@@ -1,8 +1,20 @@
-Local build:
+## Installation
+```
 yarn install
-
-Development:
+```
+## Development
+```
 yarn dev
+```
+
+## Build
+```
+yarn build
+```
+
+## Deployment
+
+Not yet implemented
 
 Notes:
 
