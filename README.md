@@ -7,3 +7,4 @@ Next steps:
 Create resuable components from the show page
 Create CI/CD pipeline to deploy the app, at least deploy to the github page
 Create mobile version of the show page. Now it just used media query to change the styling, which is not matched the wireframe. 
+Can use SWR fetching to cache the contents, as it has number of images
