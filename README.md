@@ -1,3 +1,9 @@
+Local build:
+yarn install
+
+Development:
+yarn dev
+
 Notes:
 
 The Home page was constrcuted as static page (an experiement on how fast this can be, compare to the show page)
