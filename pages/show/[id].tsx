@@ -5,6 +5,7 @@ import Layout, { siteTitle } from '../../components/layout';
 import ReactStars from "react-rating-stars-component";
 import showStyles from './show.module.css';
 import { convertArrayToString } from '../../utils';
+import { fetchData } from '../../utils/api';
 
 const Show = () => {
     const router = useRouter();
@@ -19,12 +20,12 @@ const Show = () => {
             if (!id) {
                 return;
             }
-            const resp = await fetch(`https://api.tvmaze.com/shows/${id}`)
-            if (resp.status !== 200) {
+            const showDetails = await fetchData(`https://api.tvmaze.com/shows/${id}`)
+            if (!showDetails) {
                 setNotFound(true)
                 return;
             }
-            const showDetails = await resp.json();
+
             if (showDetails.rating?.average > 5) {
                 showDetails.rating.average = 5;
             }
@@ -35,8 +36,7 @@ const Show = () => {
             if (!id) {
                 return;
             }
-            const resp = await fetch(`https://api.tvmaze.com/shows/${id}/cast`)
-            const castDetails = await resp.json();
+            const castDetails = await fetchData(`https://api.tvmaze.com/shows/${id}/cast`)
             setCasts(castDetails);
         }
 

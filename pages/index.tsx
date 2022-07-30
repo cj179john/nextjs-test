@@ -5,17 +5,18 @@ import Date from '../components/date'
 import Card from 'react-bootstrap/Card';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { fetchData } from '../utils/api';
 
 export default function Home() {
     const [allSchedules, setAllSchedules] = useState([]);
 
     useEffect(() => {
         const getAllSchedules = async () => {
-            const res = await fetch('https://api.tvmaze.com/schedule');
-            if (res.status !== 200) {
+            const result = await fetchData('https://api.tvmaze.com/schedule');
+            if (!result) {
                 return;
             }
-            setAllSchedules(await res.json());
+            setAllSchedules(result);
         }
         getAllSchedules();
     }, []);
