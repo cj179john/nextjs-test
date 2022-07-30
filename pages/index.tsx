@@ -3,11 +3,22 @@ import Layout, { siteTitle } from '../components/layout'
 import utilStyles from '../styles/utils.module.css'
 import Date from '../components/date'
 import Card from 'react-bootstrap/Card';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
-export default function Home({ allSchedules }) {
-    const cardOnClick = (id: string) => () => {
-        location.href = `/show/${id}`;
-    };
+export default function Home() {
+    const [allSchedules, setAllSchedules] = useState([]);
+
+    useEffect(() => {
+        const getAllSchedules = async () => {
+            const res = await fetch('https://api.tvmaze.com/schedule');
+            if (res.status !== 200) {
+                return;
+            }
+            setAllSchedules(await res.json());
+        }
+        getAllSchedules();
+    }, []);
 
     return (
         <Layout home>
@@ -20,8 +31,9 @@ export default function Home({ allSchedules }) {
             <div className={utilStyles.mainContent}>
                 <div className={utilStyles.cards}>
                     {allSchedules.map(({ id, show, airstamp}) => (
-                        <div key={id}>
-                            <Card className={utilStyles.card} onClick={cardOnClick(show.id)}>
+                        <Link key={id} href={`/show/${id}`}>
+
+                            <Card className={utilStyles.card}>
                                 <Card.Img variant="top" src={show.image.medium} className={utilStyles.cardImg} />
                                 <Card.Header className={utilStyles.boldText}>{show.name}</Card.Header>
                                 <Card.Body>
@@ -31,21 +43,10 @@ export default function Home({ allSchedules }) {
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
-                        </div>
+                        </Link>
                     ))}
                 </div>
             </div>
         </Layout>
     )
-}
-
-export async function getStaticProps() {
-  const res = await fetch('https://api.tvmaze.com/schedule');
-  const schedules = await res.json();
-
-  return {
-    props: {
-      allSchedules: schedules
-    }
-  }
 }

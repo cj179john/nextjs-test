@@ -7,10 +7,12 @@ import showStyles from './show.module.css';
 import { convertArrayToString } from '../../utils';
 
 const Show = () => {
-    const router = useRouter()
+    const router = useRouter();
+
     const [show, setShow] = useState(null);
     const [casts, setCasts] = useState(null);
-    const { id } = router.query
+    const [notFound, setNotFound] = useState(false);
+    const { id } = router.query;
 
     useEffect(() => {
         const getShowById = async () => {
@@ -18,8 +20,12 @@ const Show = () => {
                 return;
             }
             const resp = await fetch(`https://api.tvmaze.com/shows/${id}`)
+            if (resp.status !== 200) {
+                setNotFound(true)
+                return;
+            }
             const showDetails = await resp.json();
-            if (showDetails.rating.average > 5) {
+            if (showDetails.rating?.average > 5) {
                 showDetails.rating.average = 5;
             }
             setShow(showDetails);
@@ -33,9 +39,23 @@ const Show = () => {
             const castDetails = await resp.json();
             setCasts(castDetails);
         }
+
         getShowById();
-        getCastsById();
+
+        if (show) {
+            getCastsById();
+        }
+
     }, [id]);
+
+    if (notFound) {
+        return <Layout home={false}>
+            <Head>
+                <title>{siteTitle}</title>
+            </Head>
+            <p>Show not found</p>
+        </Layout>
+    }
 
     return (
         !show ? <div>loading....</div>

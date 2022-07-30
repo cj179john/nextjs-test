@@ -31,7 +31,10 @@ jobs:
     - name: Build
       run: yarn build && yarn export && touch ./out/.nojekyll
     - name: Deploy
+      env:
+          NODE_ENV: production
       uses: JamesIves/github-pages-deploy-action@4.1.0
       with:
         BRANCH: gh-pages # The branch the action should deploy to.
         FOLDER: out
+        clean: true
