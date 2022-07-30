@@ -5,9 +5,9 @@ name: Deploy to Github Pages
 
 on:
   push:
-    branches: [ "gb-pages" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "gb-pages" ]
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x, 14.x, 16.x]
+        node-version: [14.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -27,12 +27,12 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
     - name: Installing packages
-      run: yarn install --frozen-lockfile
-    - name: Build  
+      run: yarn --immutable
+    - name: Build
       run: yarn build && yarn export && touch ./out/.nojekyll
     - name: Deploy
       uses: JamesIves/github-pages-deploy-action@4.1.0
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         BRANCH: gh-pages # The branch the action should deploy to.
-        FOLDER: out 
+        FOLDER: out
