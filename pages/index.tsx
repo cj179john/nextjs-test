@@ -32,7 +32,7 @@ export default function Home() {
             <div className={utilStyles.mainContent}>
                 <div className={utilStyles.cards}>
                     {allSchedules.map(({ id, show, airstamp}) => (
-                        <Link key={id} href={`/show/${id}`}>
+                        <Link key={id} href={`/show/${show.id}`}>
 
                             <Card className={utilStyles.card}>
                                 <Card.Img variant="top" src={show.image.medium} className={utilStyles.cardImg} />

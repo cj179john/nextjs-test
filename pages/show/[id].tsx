@@ -20,7 +20,7 @@ const Show = () => {
             if (!id) {
                 return;
             }
-            const showDetails = await fetchData(`https://api.tvmaze.com/shows/${id}`)
+            const showDetails = await fetchData(`https://api.tvmaze.com/shows/${id}?embed=cast`)
             if (!showDetails) {
                 setNotFound(true)
                 return;
@@ -30,21 +30,10 @@ const Show = () => {
                 showDetails.rating.average = 5;
             }
             setShow(showDetails);
-        }
-
-        const getCastsById = async () => {
-            if (!id) {
-                return;
-            }
-            const castDetails = await fetchData(`https://api.tvmaze.com/shows/${id}/cast`)
-            setCasts(castDetails);
+            setCasts(showDetails?._embedded?.cast);
         }
 
         getShowById();
-
-        if (show) {
-            getCastsById();
-        }
 
     }, [id]);
 
